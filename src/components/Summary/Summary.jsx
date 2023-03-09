@@ -5,7 +5,7 @@ import { selectMonthsStats } from 'redux/Transactions/selectors'; // , getIsload
 import css from './Summary.module.css';
 
 export const Summary = () => {
-  // const summaryMonth = 6; // Кількість місяців яку необхідно рендерити
+  const summaryMonth = 6; // Кількість місяців яку необхідно рендерити
 
   const stateMonts = useSelector(selectMonthsStats);
 
@@ -26,6 +26,7 @@ export const Summary = () => {
       'Февраль',
       'Январь',
     ];
+
     const listMonthsEng = {
       Январь: 'January',
       Февраль: 'February',
@@ -45,22 +46,22 @@ export const Summary = () => {
       .map(e => {
         return { month: listMonthsEng[e], value: stateMonts[e] };
       })
-      .filter(e => e.value !== 'N/A');
+      .filter(e => e.value !== 'N/A').slice(0, summaryMonth);
 
     setlistMonths(result);
   }, [stateMonts]);
 
   return (
     <div className={css.summaryContainer}>
-      <h3 className={css.summaryTitle}>SUMMARY</h3>
-      <ul className={css.summaryList}>
-        {listMonths.map(({ month, value }, edx) => (
-          <li key={edx} className={css.summaryItem}>
-            <p className={css.summaryDescription}>{month}</p>
-            <p className={css.summaryDescription}> {value} </p>
-          </li>
-        ))}
-      </ul>
+        <h3 className={css.summaryTitle}>SUMMARY</h3>
+        <ul className={css.summaryList}>
+          {listMonths.map(({ month, value }, edx) => (
+            <li key={edx} className={css.summaryItem}>
+              <p className={css.summaryDescription}>{month}</p>
+              <p className={css.summaryDescription}> {value} </p>
+            </li>
+          ))}
+        </ul>
     </div>
   );
 };
