@@ -21,12 +21,27 @@ export const Summary = () => {
   
 
   const allMonths = ["Декабрь", "Ноябрь", "Октябрь", "Сентябрь", "Август", "Июль", "Июнь", "Май", "Апрель", "Март", "Февраль", "Январь"];
-  let result = [];
+  const allMonthsEn = {
+    "Январь": "January",
+    "Февраль": "February",
+    "Март": "March",
+    "Апрель": "April",
+    "Май": "May",
+    "Июнь": "June",
+    "Июль": "July",
+    "Август": "August",
+    "Сентябрь": "September",
+    "Октябрь": "October",
+    "Ноябрь": "November",
+    "Декабрь": "December"
+  };
 
+  let result = [];
   allMonths.map((e)=>{
     const s = stateMonts[e];
     if( s === 'N/A') {return};
-    result = [...result, {month: e, value: s }]
+    const m = allMonthsEn[e]
+    result = [...result, {month: m, value: s }]
   });
   
   console.log('result >>', result );
