@@ -13,3 +13,5 @@ export const selectTransactionDataIncomesData = state =>
 export const getIsloading = state => state.transactions.isLoading;
 
 export const selectTransactions = state => state.transactions.items;
+
+export const selectMonthsStats = state => state.transactions.monthsStats;

@@ -20,6 +20,7 @@ const initialState = {
   currentReport: 'Expenses',
   error: null,
   isLoading: false,
+  monthsStats: {}
 };
 
 const transactionsSlice = createSlice({
@@ -64,11 +65,14 @@ const transactionsSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getTransactionIncome.fulfilled, (state, { payload }) => {
-        state.items = [...payload].reverse();
+        state.items = [...payload.incomes].reverse();
+        state.monthsStats = payload.monthsStats;
         state.isLoading = false;
       })
       .addCase(getTransactionExpense.fulfilled, (state, { payload }) => {
-        state.items = [...payload].reverse();
+        console.log('payload.expenses', payload.expenses);
+        state.items = [...payload.expenses].reverse();
+        state.monthsStats = payload.monthsStats;
         state.isLoading = false;
       })
       .addCase(deleteTransacton.fulfilled, (state, { payload }) => {

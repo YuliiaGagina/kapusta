@@ -1,19 +1,45 @@
 
-// console.log('handleRequest e >>', e);
+// console.log(' >>', );
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux'; //, useSelector
+import { useSelector } from 'react-redux'; // useDispatch, 
 import { getTransactionIncome, getTransactionExpense } from 'redux/Transactions/TransactionsOperations';
+import { selectMonthsStats } from 'redux/Transactions/selectors'; // , getIsloading
 
 // import data from './month.json';
 import css from './Summary.module.css';
 
 export const Summary = () => {
+  // const dispatch = useDispatch();
   const summaryMonth = 6; // Кількість місяців яку необхідно рендерити
-  const [listMonths, setlistMonths] = useState([]); // масив запитів
-  console.log('listMonths >>', listMonths);
 
-  const dispatch = useDispatch();
+  const stateMonts = useSelector(selectMonthsStats);
+  console.log('stateMonts >>', stateMonts);
+
+  const [listMonths, setlistMonths] = useState([]); // масив запитів
+  // console.log('listMonths >>', listMonths);
   
+  
+
+  const allMonths = ["Декабрь", "Ноябрь", "Октябрь", "Сентябрь", "Август", "Июль", "Июнь", "Май", "Апрель", "Март", "Февраль", "Январь"];
+  let result = [];
+
+  allMonths.map((e)=>{
+    const s = stateMonts[e];
+    if( s === 'N/A') {return};
+    result = [...result, {month: e, value: s }]
+  });
+  
+  console.log('result >>', result );
+
+
+
+  const monthName = "январь";
+  const monthNumber = allMonths.indexOf(monthName) + 1;
+  console.log(monthNumber); // виведе 1
+
+
+
+
 
   // 1) Створює [рік-місяць, рік-місяць, ...] за останні 6 міс. Використовується для запиту данних по місяцях і для формування списку міс. на сторінці.
   // Потім ереробити на useMemo 
@@ -31,14 +57,6 @@ export const Summary = () => {
     setlistMonths(yearMonthList)
   }, [summaryMonth]);
 
-  // 2) Запит за балансом за останні 6 міс.
-  // переробити на useEffect і запусскати при 1му рендер і при оновленні баласу
-  const handleRequest = ()=>{
-
-      dispatch( getTransactionExpense() );
-      dispatch( getTransactionIncome() );
-      
-  };
 
   // 3) Зберігати вдповідь в стор в масив об'єктів запит(дата):відповідь(данні по суммі)
   // 4) Побудувати розмітку по данних
@@ -58,9 +76,9 @@ export const Summary = () => {
       <h3 className={css.summaryTitle}>SUMMARY</h3>
       <ul className={css.summaryList}>
 
-        {arrMonthBalances.map(({ month, value }) => (
+        {arrMonthBalances.map(({ month, value }, edx) => (
 
-          <li key={month} className={css.summaryItem}>
+          <li key={edx} className={css.summaryItem}>
             <p className={css.summaryDescription}>
             March
             {/* {data.find(monthData => monthData.id === month).name} */}
@@ -68,10 +86,7 @@ export const Summary = () => {
             <p className={css.summaryDescription}> {value} </p>
           </li>
         ))}
-        
-        <button 
-          type="button" 
-          onClick={() => handleRequest()}>request</button>
+
       </ul>
     </div>
   );
