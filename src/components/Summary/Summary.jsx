@@ -44,10 +44,6 @@ export const Summary = () => {
     };
   }, [isLoadingStore]);
 
-  const dispatch = useDispatch();
-  const stateItems = useSelector(selectTransactions); // слідкую за списком транзакцій
-
-
   // * Логіка відслідковування оновлень:
   const dispatch = useDispatch();
   // поточна сторінка
@@ -56,31 +52,19 @@ export const Summary = () => {
   const isExpensePage = pathname.includes('/expense');
   // запт за данними
   useEffect(() => {
-
     let timeoutId;
     timeoutId = setTimeout(() => {
       if (isIncomePage) {
-
-    console.log('stateІtems *****>>', stateItems);
-    if (isIncomePage) {
-
         dispatch(getTransactionIncomeMonthsStats());
       }
       if (isExpensePage) {
         dispatch(getTransactionExpenseMonthsStats());
-
       }
     }, 200);
     return () => {
       clearTimeout(timeoutId);
     };
   }, [ІtemsStore, dispatch, isExpensePage, isIncomePage]);
-
-      }, 0);
-    }
-    return;
-  }, [stateItems, dispatch, isExpensePage, isIncomePage, ]);
-
 
   // * Логіка побудови списку:
   const montsStore = useSelector(selectMonthsStats); // місячна статистика з бекенду
@@ -124,13 +108,8 @@ export const Summary = () => {
       .filter(e => e.value !== 'N/A')
       .slice(0, summaryMonth);
 
-
     setlistMonthsState(result);
   }, [montsStore, ІtemsStore]);
-
-    setlistMonths(result);
-  }, [stateMonts, stateItems]);
-
 
   return (
     <Container>
